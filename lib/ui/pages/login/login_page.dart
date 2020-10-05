@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
     widget.presenter.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,26 +28,9 @@ class _LoginPageState extends State<LoginPage> {
           builder: (context) {
             widget.presenter.isloadingStream.listen((isLoading) { 
             if(isLoading) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                child: SimpleDialog(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircularProgressIndicator(),
-                        SizedBox(height: 30,),
-                        Text('Aguarde...', textAlign: TextAlign.center,)
-                      ],
-                    )
-                  ],
-                )
-              );
+              showLoading(context);
             } else {
-              if(Navigator.canPop(context)) {
-                Navigator.of(context).pop();
-              }
+              hideLoading(context);
             }
             });
 
