@@ -15,6 +15,7 @@ class LoginPage extends StatelessWidget {
         body: Builder(
           builder: (context) {
             presenter.isloadingStream.listen((isLoading) { 
+            if(isLoading) {
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -31,6 +32,11 @@ class LoginPage extends StatelessWidget {
                   ],
                 )
               );
+            } else {
+              if(Navigator.canPop(context)) {
+                Navigator.of(context).pop();
+              }
+            }
             });
             return SingleChildScrollView(
             child: Column(
