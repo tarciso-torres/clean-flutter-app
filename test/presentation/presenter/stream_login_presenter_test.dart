@@ -71,4 +71,12 @@ void main() {
     sut.validatePassword(password);
   });
 
+  test('Should emit password null if validation succeeds', () {
+    sut.passwordErrorStream.listen(expectAsync1((error) => expect(error, null)));
+    sut.isFormValidStream.listen(expectAsync1((isValid) => expect(isValid, false)));
+    
+    sut.validatePassword(password);
+    sut.validatePassword(password);
+  });
+
 }
