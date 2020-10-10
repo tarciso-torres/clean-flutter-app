@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 
 void showErrorMessage({BuildContext context, String error}) {
   Scaffold.of(context).showSnackBar(SnackBar(
