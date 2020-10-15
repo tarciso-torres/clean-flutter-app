@@ -5,5 +5,5 @@ import '../../factories.dart';
 
 
 Widget makeLoginPage(){
-  return LoginPage(presenter: makeLoginPresenter());
+  return LoginPage(presenter: makeGetxLoginPresenter());
 }
