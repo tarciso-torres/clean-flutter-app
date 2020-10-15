@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         body: Builder(
           builder: (context) {
-            widget.presenter.isloadingStream.listen((isLoading) { 
+            widget.presenter.isLoadingStream.listen((isLoading) { 
             if(isLoading) {
               showLoading(context);
             } else {
