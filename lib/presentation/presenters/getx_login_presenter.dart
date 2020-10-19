@@ -50,14 +50,14 @@ class GetxLoginPresenter implements LoginPresenter {
   }
 
   Future<void> auth() async {
-    _isLoading.value = true;
     try {
+      _isLoading.value = true;
       final account = await authentication.auth(AuthenticationParams(email: _email, secret: _password));
       await saveCurrentAccount.save(account);
     } on DomainError catch (error) {
       _mainError.value = error.description;
+      _isLoading.value = false;
     }
-    _isLoading.value = false;
   }
 
   void dispose() {}
