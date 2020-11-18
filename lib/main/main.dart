@@ -1,3 +1,4 @@
+import 'package:ForDev/utils/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
@@ -6,6 +7,7 @@ import '../ui/components/components.dart';
 import 'factories/factories.dart';
 
 void main() {
+  R.load(Locale('en', 'US'));
   runApp(App());
 }
 
@@ -22,8 +24,8 @@ class App extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: makeSplashPage, transition: Transition.fade),
-        GetPage(name: '/login', page: makeLoginPage, transition: Transition.fade),
-        GetPage(name: '/surveys', page: () => Scaffold(body: Text('Enquetes')), transition: Transition.fade),
+        GetPage(name: '/login', page: makeLoginPage, transition: Transition.fadeIn),
+        GetPage(name: '/surveys', page: () => Scaffold(body: Text('Enquetes')), transition: Transition.fadeIn),
       ],
     );
   }
