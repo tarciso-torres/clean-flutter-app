@@ -22,7 +22,7 @@ class RemoteAddAccount {
           method: 'post',
           body: body
       );
-    } on HttpError catch() {
+    } on HttpError catch(error) {
       throw DomainError.unexpected;
     }
   }
