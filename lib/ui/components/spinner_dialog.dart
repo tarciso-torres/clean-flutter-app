@@ -1,3 +1,4 @@
+import 'package:ForDev/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 
 void showLoading(BuildContext context) {
@@ -14,7 +15,7 @@ void showLoading(BuildContext context) {
                 height: 30,
               ),
               Text(
-                'Aguarde...',
+                R.strings.wait,
                 textAlign: TextAlign.center,
               )
             ],

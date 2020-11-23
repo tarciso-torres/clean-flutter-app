@@ -20,13 +20,24 @@ class EnUs implements Translations {
   String get addAccount => 'Add Account';
 
   @override
+  String get confirmPassword => 'Confirmar senha';
+
+  @override
   String get email => 'Email';
 
   @override
   String get enter => 'Enter';
 
   @override
+  String get login => 'Login';
+
+  @override
+  String get name => 'Name';  
+
+  @override
   String get password => 'Password';
 
+  @override
+  String get wait => 'Wait...';
 
 }
