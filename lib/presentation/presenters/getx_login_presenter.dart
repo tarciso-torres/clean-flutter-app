@@ -9,7 +9,7 @@ import '../../domain/usecases/usecases.dart';
 
 import '../protocols/protocols.dart';
 
-class GetxLoginPresenter implements LoginPresenter {
+class GetxLoginPresenter extends GetxController implements LoginPresenter {
   final Validation validation;
   final Authentication authentication;
   final SaveCurrentAccount saveCurrentAccount;

@@ -1,11 +1,11 @@
 # Signup Presenter
 
 > ## Regras
-01. Chamar Validation ao alterar o email
-02. Notificar o emailErrorStream com o mesmo erro do Validation, caso retorne erro
-03. Notificar o emailErrorStream com null, caso o Validation não retorne erro
-04. Não notificar o emailErrorStream se o valor for igual ao último
-05. Notificar o isFormValidStream após alterar o email
+01. ✅ Chamar Validation ao alterar o email
+02. ✅ Notificar o emailErrorStream com o mesmo erro do Validation, caso retorne erro
+03. ✅ Notificar o emailErrorStream com null, caso o Validation não retorne erro
+04. ✅ Não notificar o emailErrorStream se o valor for igual ao último
+05. ✅ Notificar o isFormValidStream após alterar o email
 06. Chamar Validation ao alterar a senha
 07. Notificar o passwordErrorStream com o mesmo erro do Validation, caso retorne erro
 08. Notificar o passwordErrorStream com null, caso o Validation não retorne erro
