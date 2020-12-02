@@ -12,11 +12,13 @@ import 'package:ForDev/presentation/protocols/protocols.dart';
 
 class ValidationSpy extends Mock implements Validation {}
 class AddAccountSpy extends Mock implements AddAccount {}
+class SaveCurrentAccountSpy extends Mock implements SaveCurrentAccount {}
 
 void main() {
   ValidationSpy validation;
-  GetxSignUpPresenter sut;
   AddAccountSpy addAccount;
+  SaveCurrentAccountSpy saveCurrentAccount;
+  GetxSignUpPresenter sut;
   String email;
   String name;
   String password;
@@ -25,7 +27,7 @@ void main() {
 
   PostExpectation mockAddAccountnCall() => when(addAccount.add(any));
 
-  void mockAddAccountn() {
+  void mockAddAccount() {
     mockAddAccountnCall().thenAnswer((_) async => AccountEntity(token));
   }
   
@@ -41,9 +43,11 @@ void main() {
   setUp(() {
     validation = ValidationSpy();
     addAccount = AddAccountSpy();
+    saveCurrentAccount = SaveCurrentAccountSpy();
     sut = GetxSignUpPresenter(
         validation: validation,
-        addAccount: addAccount
+        addAccount: addAccount,
+        saveCurrentAccount: saveCurrentAccount
     );
     email = faker.internet.email();
     name = faker.person.name();
@@ -51,6 +55,7 @@ void main() {
     passwordConfirmation = faker.internet.password();
     token = faker.guid.guid();
     mockValidation();
+    mockAddAccount();
   });
 
   test('Should call Validation with correct email', () {
@@ -220,7 +225,7 @@ void main() {
     sut.validatePassword(password);
     sut.validatePasswordConfirmation(passwordConfirmation);
 
-    await sut.sigUp();
+    await sut.signUp();
 
     verify(addAccount
             .add(AddAccountParams(
@@ -229,5 +234,16 @@ void main() {
               password: password,
               passwordConfirmation: passwordConfirmation)))
         .called(1);
+  });
+
+  test('Should call SaveCurrentAccount with correct value', () async {
+    sut.validateName(name);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    await sut.signUp();
+
+    verify(saveCurrentAccount.save(AccountEntity(token))).called(1);
   });
 }
