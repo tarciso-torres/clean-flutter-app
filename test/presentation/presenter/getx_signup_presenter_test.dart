@@ -4,18 +4,30 @@ import 'package:test/test.dart';
 
 import 'package:ForDev/ui/helpers/errors/errors.dart';
 
+import 'package:ForDev/domain/entities/entities.dart';
+import 'package:ForDev/domain/usecases/usecases.dart';
+
 import 'package:ForDev/presentation/presenters/presenters.dart';
 import 'package:ForDev/presentation/protocols/protocols.dart';
 
 class ValidationSpy extends Mock implements Validation {}
+class AddAccountSpy extends Mock implements AddAccount {}
 
 void main() {
   ValidationSpy validation;
   GetxSignUpPresenter sut;
+  AddAccountSpy addAccount;
   String email;
   String name;
   String password;
   String passwordConfirmation;
+  String token;
+
+  PostExpectation mockAddAccountnCall() => when(addAccount.add(any));
+
+  void mockAddAccountn() {
+    mockAddAccountnCall().thenAnswer((_) async => AccountEntity(token));
+  }
   
 
   PostExpectation mockValidatioinCall(String field) => when(validation.validate(
@@ -28,13 +40,16 @@ void main() {
 
   setUp(() {
     validation = ValidationSpy();
+    addAccount = AddAccountSpy();
     sut = GetxSignUpPresenter(
         validation: validation,
-        );
+        addAccount: addAccount
+    );
     email = faker.internet.email();
     name = faker.person.name();
     password = faker.internet.password();
     passwordConfirmation = faker.internet.password();
+    token = faker.guid.guid();
     mockValidation();
   });
 
@@ -197,5 +212,22 @@ void main() {
     await Future.delayed(Duration.zero);
     sut.validatePasswordConfirmation(passwordConfirmation);
     await Future.delayed(Duration.zero);
+  });
+
+  test('Should call AddAccount with correct values', () async {
+    sut.validateName(name);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    await sut.sigUp();
+
+    verify(addAccount
+            .add(AddAccountParams(
+              name: name,
+              email: email,
+              password: password,
+              passwordConfirmation: passwordConfirmation)))
+        .called(1);
   });
 }
