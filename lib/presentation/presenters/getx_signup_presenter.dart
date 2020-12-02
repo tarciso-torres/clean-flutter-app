@@ -7,6 +7,10 @@ import '../protocols/protocols.dart';
 
 class GetxSignUpPresenter extends GetxController {
   final Validation validation;
+  String _name;
+  String _email;
+  String _password;
+  String _passwordConfirmation;
 
   var _emailError = Rx<UIError>();
   var _nameError = Rx<UIError>();
@@ -23,21 +27,25 @@ class GetxSignUpPresenter extends GetxController {
   GetxSignUpPresenter({ @required this.validation });
 
   void validateEmail(String email) {
+    _email = email;
     _emailError.value = _validateField(field: 'email', value: email);
     _validateForm();
   }
 
   void validateName(String name) {
+    _name = name;
     _nameError.value = _validateField(field: 'name', value: name);
     _validateForm();
   }
 
   void validatePassword(String password) {
+    _password = password;
     _passwordError.value = _validateField(field: 'password', value: password);
     _validateForm();
   }
 
   void validatePasswordConfirmation(String passwordConfirmation) {
+    _passwordConfirmation = passwordConfirmation;
     _passwordConfirmationError.value = _validateField(field: 'passwordConfirmation', value: passwordConfirmation);
     _validateForm();
   }
@@ -52,7 +60,14 @@ class GetxSignUpPresenter extends GetxController {
   }
 
   void _validateForm() {
-    _isFormValid.value = false;
+    _isFormValid.value = _emailError.value == null
+    && _nameError.value == null
+    && _emailError.value == null
+    && _passwordConfirmationError.value == null
+    && _name != null
+    && _email != null
+    && _password != null
+    && _passwordConfirmation != null;
   }
 
   void dispose() {}
