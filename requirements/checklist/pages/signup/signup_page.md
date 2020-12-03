@@ -3,7 +3,7 @@
 > ## Regras
 01. ✅ Os campos devem começar sem exibir mensagem de erro
 02. ✅ O botão de criar conta deve começar desabilitado0
-03.  Após digitar algo em um campo, a mensagem de erro só deve sumir se o campo for válido
+03. ✅ Após digitar algo em um campo, a mensagem de erro só deve sumir se o campo for válido
 04. ✅ Validar email quando o usuário digitar no campo
 05. ✅ Mostrar mensagem de erro se o email for inválido
 06. ✅ Remover mensagem de erro se o email for válido
@@ -23,3 +23,4 @@
 20. ✅ Exibir mensagem de erro caso a criação de conta falhe
 21. ✅ Esconder loading no fim da ação de criar conta
 22. ✅ Fechar streams quando a página for encerrada
+23. ✅ Chamar o método de Login ao clicar no link 
