@@ -4,14 +4,14 @@ import '../../presentation/protocols/protocols.dart';
 
 import '../protocols/protocols.dart';
 
-class CompareFieldValidation implements FieldValidation {
+class CompareFieldsValidation implements FieldValidation {
   final String field;
-  final String valueToCompare;
+  final String fieldToCompare;
 
-  CompareFieldValidation({ @required this.field, @required this.valueToCompare });
+  CompareFieldsValidation({ @required this.field, @required this.fieldToCompare });
 
   @override
-  ValidationError validate(String value) {
-    return value == valueToCompare ? null : ValidationError.invalidField;
+  ValidationError validate(Map input) {
+    return input[field] == input[fieldToCompare] ? null : ValidationError.invalidField;
   }
 }

@@ -45,7 +45,7 @@ void main() {
   });
 
   test('Should return null if all validations return null or empty', () {
-    final error = sut.validate(field: 'any_field', value: 'any_value');
+    final error = sut.validate(field: 'any_field', input: {'any_field': 'any_value'});
 
     expect(error, null);
   });
@@ -55,7 +55,7 @@ void main() {
     mockValidation2(ValidationError.requiredField);
     mockValidation3(ValidationError.invalidField);
     
-    final error = sut.validate(field: 'any_field', value: 'any_value');
+    final error = sut.validate(field: 'any_field', input: {'any_field': 'any_value'});
 
     expect(error, ValidationError.requiredField);
   });
