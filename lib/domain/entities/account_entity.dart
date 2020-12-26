@@ -6,5 +6,5 @@ class AccountEntity extends Equatable{
   @override
   List get props => [token];
 
-  AccountEntity(this.token);
+  AccountEntity({ this.token });
 }
