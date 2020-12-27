@@ -96,14 +96,15 @@ class GetxSignUpPresenter extends GetxController implements SignUpPresenter {
 
   Future<void> signUp() async {
     try{
-    _isLoading.value = true;
-    final account = await addAccount.add(AddAccountParams(
-      name: _name,
-      email: _email,
-      password: _password,
-      passwordConfirmation: _passwordConfirmation
-    ));
-    _navigateTo.value = '/surveys';
+      _mainError.value = null;
+      _isLoading.value = true;
+      final account = await addAccount.add(AddAccountParams(
+        name: _name,
+        email: _email,
+        password: _password,
+        passwordConfirmation: _passwordConfirmation
+      ));
+      _navigateTo.value = '/surveys';
     await saveCurrentAccount.save(account);
     } on DomainError catch (error) {
       switch(error){
