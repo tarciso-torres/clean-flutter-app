@@ -1,3 +1,4 @@
+import 'package:ForDev/domain/helpers/domain_error.dart';
 import 'package:faker/faker.dart';
 import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
@@ -15,9 +16,14 @@ class RemoteLoadSurveys {
   RemoteLoadSurveys({ @required this.url, @required  this.httpClient });
   
   Future<List<SurveytEntity>> load() async {
+    try {
     final httpResponse = await httpClient.request(url: url, method: 'get');
 
     return httpResponse.map((json) => RemoteSurveyModel.fromJson(json).toEntity()).toList();
+
+    }on HttpError {
+      throw DomainError.unexpected;
+    }
   }
 }
 
@@ -82,5 +88,13 @@ void main() {
       )
     ]);
 
+  });
+
+  test('Should throw UnexpectedError if HttpClient returns 200 with invalid data', () async {
+    mockHttpData([{'invalid_key': 'invalid_value'}]);
+
+    final future = sut.load();
+
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
