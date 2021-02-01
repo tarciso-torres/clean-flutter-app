@@ -43,4 +43,7 @@ class EnUs implements Translations {
   @override
   String get wait => 'Wait...';
 
+  @override
+  String get surveys => "Surveys";
+
 }
