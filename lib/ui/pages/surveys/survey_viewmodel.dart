@@ -2,11 +2,11 @@ class SurveyViewModel {
   final String id;
   final String question;
   final String date;
-  final String didAnswer;
+  final bool didAnswer;
 
-  SurveyViewModel(
+  SurveyViewModel({
     this.id,
     this.question,
     this.date,
-    this.didAnswer);
+    this.didAnswer});
 }
