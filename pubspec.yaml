@@ -16,6 +16,7 @@ dependencies:
   get:
   flutter_secure_storage:
   carousel_slider: ^3.0.0
+  intl:
 
 dev_dependencies:
   flutter_test:

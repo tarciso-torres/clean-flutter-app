@@ -30,7 +30,7 @@ class RemoteSurveyModel {
   }
   
 
-  SurveytEntity toEntity() => SurveytEntity(
+  SurveyEntity toEntity() => SurveyEntity(
     id: id,
     question: question,
     dateTime: DateTime.parse(date),

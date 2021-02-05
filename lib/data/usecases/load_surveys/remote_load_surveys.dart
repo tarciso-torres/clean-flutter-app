@@ -14,7 +14,7 @@ class RemoteLoadSurveys implements LoadSurveys {
 
   RemoteLoadSurveys({ @required this.url, @required  this.httpClient });
   
-  Future<List<SurveytEntity>> load() async {
+  Future<List<SurveyEntity>> load() async {
     try {
     final httpResponse = await httpClient.request(url: url, method: 'get');
 

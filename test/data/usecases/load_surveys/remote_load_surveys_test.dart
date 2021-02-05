@@ -59,13 +59,13 @@ void main() {
     final surveys = await sut.load();
 
     expect(surveys, [
-      SurveytEntity(
+      SurveyEntity(
         id: list[0]['id'],
         question: list[0]['question'],
         dateTime: DateTime.parse(list[0]['date']),
         didAnswer: list[0]['didAnswer'],
       ),
-      SurveytEntity(
+      SurveyEntity(
         id: list[1]['id'],
         question: list[1]['question'],
         dateTime: DateTime.parse(list[1]['date']),

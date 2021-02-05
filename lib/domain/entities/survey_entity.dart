@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-class SurveytEntity extends Equatable{
+class SurveyEntity extends Equatable{
   final String id;
   final String question;
   final DateTime dateTime;
@@ -9,7 +9,7 @@ class SurveytEntity extends Equatable{
 
   List get props => ['id', 'question', 'dateTime', 'didAnswer'];
 
-  SurveytEntity({ 
+  SurveyEntity({ 
     @required this.id, 
     @required this.question, 
     @required this.dateTime, 
