@@ -14,7 +14,6 @@ class SurveysPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    presenter.loadData();
     return Scaffold(
       appBar: AppBar(title: Text(R.strings.surveys),),
       body: Builder(
@@ -25,7 +24,9 @@ class SurveysPage extends StatelessWidget {
             } else {
               hideLoading(context);
             }
-           });
+          });
+          presenter.loadData();
+          
           return StreamBuilder<List<SurveyViewModel>>(
             stream: presenter.surveysStream,
             builder: (context, snapshot) {
