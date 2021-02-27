@@ -13,8 +13,9 @@ FetchCacheStorageSpy fetchCacheStorage;
 LocalLoadSurveys sut;
 
 void main() {
-  
-  FetchCacheStorageSpy fetchCacheStorage;
+
+  group('load', () {
+    FetchCacheStorageSpy fetchCacheStorage;
   LocalLoadSurveys sut;
   List<Map> data;
 
@@ -98,5 +99,6 @@ void main() {
     final future = sut.load();
     
     expect(future, throwsA(DomainError.unexpected));
+  });
   });
 }
