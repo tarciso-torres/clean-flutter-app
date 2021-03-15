@@ -198,19 +198,19 @@ void main() {
       surveys = mockSurveys();
     });
 
-    test('Should call cacheStorage with correct values', () async {
+    test('Should call CacheStorage with correct values', () async {
       final list = [
         {
         'id': surveys[0].id,
         'question': surveys[0].question,
         'date': '2020-02-02T00:00:00.000Z',
-        'didAnswer': true,
+        'didAnswer': 'true',
         },
         {
         'id': surveys[1].id,
         'question': surveys[1].question,
         'date': '2020-12-20T00:00:00.000Z',
-        'didAnswer': false,
+        'didAnswer': 'false',
         },
       ];
 
