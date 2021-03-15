@@ -117,14 +117,14 @@ void main() {
       'didAnswer': 'true'
     }];
 
-    PostExpectation mockFetcCall() => when(cacheStorage.fetch(any));
+    PostExpectation mockFetchCall() => when(cacheStorage.fetch(any));
 
     void mockFetch(List<Map> list) {
       data = list;
-      mockFetcCall().thenAnswer((_) async => data);
+      mockFetchCall().thenAnswer((_) async => data);
     }
 
-    void mockFetchError() => mockFetcCall().thenThrow(Exception);
+    void mockFetchError() => mockFetchCall().thenThrow(Exception);
 
     setUp(() {
       cacheStorage = CacheStorageSpy();
@@ -177,6 +177,10 @@ void main() {
     LocalLoadSurveys sut;
     List<SurveyEntity> surveys;
 
+    PostExpectation mockSaveCall() => when(cacheStorage.save(key: anyNamed('key'), value: anyNamed('value')));
+
+    void mockSaveError() => mockSaveCall().thenThrow(Exception);
+
     List<SurveyEntity> mockSurveys() => [
       SurveyEntity(
         id: faker.guid.guid(),
@@ -218,5 +222,14 @@ void main() {
       
       verify(cacheStorage.save(key: 'surveys', value: list)).called(1);
     });
+
+    test('Should throw UnexpectedError if save throws', () async {
+      mockSaveError();
+
+      final future = sut.save(surveys);
+      
+      expect(future, throwsA(DomainError.unexpected));
+    });
+
   });
 }
