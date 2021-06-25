@@ -13,7 +13,7 @@ void main() {
   LocalStorageSpy localStorage;
   LocalStorageAdapter sut;
 
-  void mockDeleteItemError() =>
+  void mockDeleteCacheError() =>
       when(localStorage.deleteItem(any)).thenThrow(Exception());
 
   void mockSetItemError() =>
@@ -34,7 +34,7 @@ void main() {
   });
 
   test('Should throw if deleteItem throws', () async {
-    mockDeleteItemError();
+    mockDeleteCacheError();
 
     final future = sut.save(key: key, value: value);
 
