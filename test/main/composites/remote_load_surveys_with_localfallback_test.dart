@@ -7,9 +7,7 @@ import 'package:ForDev/data/usecases/usecases.dart';
 class RemoteLoadSurveysWithLocalFallback {
   final RemoteLoadSurveys remote;
 
-  RemoteLoadSurveysWithLocalFallback({
-    @required this.remote
-  });
+  RemoteLoadSurveysWithLocalFallback({@required this.remote});
 
   Future<void> load() async {
     remote.load();
@@ -19,12 +17,15 @@ class RemoteLoadSurveysWithLocalFallback {
 class RemoteLoadSurveysSpy extends Mock implements RemoteLoadSurveys {}
 
 void main() {
-  test('Should call remote load', () async {
-    final remote = RemoteLoadSurveysSpy();
-    final sut = RemoteLoadSurveysWithLocalFallback(
-      remote: remote
-    );
+  RemoteLoadSurveysWithLocalFallback sut;
+  RemoteLoadSurveysSpy remote;
+  
+  setUp(() {
+    remote = RemoteLoadSurveysSpy();
+    sut = RemoteLoadSurveysWithLocalFallback(remote: remote);
+  });
 
+  test('Should call remote load', () async {
     await sut.load();
 
     verify(remote.load()).called(1);
