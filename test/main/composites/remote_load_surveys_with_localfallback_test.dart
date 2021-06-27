@@ -12,20 +12,27 @@ class RemoteLoadSurveysWithLocalFallback implements LoadSurveys {
   final RemoteLoadSurveys remote;
   final LocalLoadSurveys local;
 
-  RemoteLoadSurveysWithLocalFallback({
-    @required this.remote,
-    @required this.local
-  });
+  RemoteLoadSurveysWithLocalFallback(
+      {@required this.remote, @required this.local});
 
   Future<List<SurveyEntity>> load() async {
-    final surveys = await remote.load();
-    await local.save(surveys);
+    try {
+      final surveys = await remote.load();
+      await local.save(surveys);
 
-    return surveys;
+      return surveys;
+    } catch (error) {
+      if(error == DomainError.accessDenied){
+        rethrow;
+      }
+      await local.validate();
+      await local.load();
+    }
   }
 }
 
 class RemoteLoadSurveysSpy extends Mock implements RemoteLoadSurveys {}
+
 class LocalLoadSurveysSpy extends Mock implements LocalLoadSurveys {}
 
 void main() {
@@ -35,13 +42,12 @@ void main() {
   List<SurveyEntity> remoteSurveys;
 
   List<SurveyEntity> mockSurveys() => [
-    SurveyEntity(
-      id: faker.guid.guid(),
-      question: faker.randomGenerator.string(10),
-      dateTime: faker.date.dateTime(),
-      didAnswer: faker.randomGenerator.boolean()
-    )
-  ];
+        SurveyEntity(
+            id: faker.guid.guid(),
+            question: faker.randomGenerator.string(10),
+            dateTime: faker.date.dateTime(),
+            didAnswer: faker.randomGenerator.boolean())
+      ];
 
   PostExpectation mockRemoteLoadCall() => when(remote.load());
 
@@ -51,8 +57,7 @@ void main() {
   }
 
   void mockRemoteLoadError(DomainError error) =>
-    mockRemoteLoadCall().thenThrow(error);
-  
+      mockRemoteLoadCall().thenThrow(error);
 
   setUp(() {
     remote = RemoteLoadSurveysSpy();
@@ -81,9 +86,18 @@ void main() {
 
   test('Should rethrow if remote load throws AccessDeniedError', () async {
     mockRemoteLoadError(DomainError.accessDenied);
-    
+
     final future = sut.load();
 
     expect(future, throwsA(DomainError.accessDenied));
+  });
+
+  test('Should call local fetch on remote error', () async {
+    mockRemoteLoadError(DomainError.unexpected);
+
+    await sut.load();
+
+    verify(local.validate()).called(1);
+    verify(local.load()).called(1);
   });
 }
