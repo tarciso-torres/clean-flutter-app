@@ -14,7 +14,7 @@ class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter{}
 void main() {
   SurveyResultPresenterSpy presenter;
   StreamController<bool> isLoadingController;
-  StreamController<List<dynamic>> surveyResultController;
+  StreamController<dynamic> surveyResultController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
@@ -86,5 +86,15 @@ void main() {
 
     expect(find.text('Algo errado aconteceu. Tente novamente em breve.'), findsOneWidget);
     expect(find.text("Recarregar"), findsOneWidget);
+  });
+
+  testWidgets('Should call LoadSurveyResult on reload click', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveyResultController.addError(UIError.unexpected.description);
+    await tester.pump();
+    await tester.tap(find.text('Recarregar'));
+
+    verify(presenter.loadData()).called(2);
   });
 }
