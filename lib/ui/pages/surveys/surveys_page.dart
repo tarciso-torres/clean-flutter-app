@@ -1,5 +1,4 @@
 import 'package:ForDev/ui/pages/pages.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,16 +33,7 @@ class SurveysPage extends StatelessWidget {
                 return ReloadScreen(error: snapshot.error, reload: presenter.loadData);
               }
               if(snapshot.hasData) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      enlargeCenterPage: true,
-                      aspectRatio: 1,
-                    ),
-                    items: snapshot.data.map((viewModel) => SurveyItem(viewModel)).toList(),
-                  ),
-                );
+                return SurveyItems(viewModels: snapshot.data);
               }
               return SizedBox(height: 0,);
             }
