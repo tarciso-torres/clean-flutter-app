@@ -23,7 +23,7 @@ void main() {
   String token;
   String httpResponse;
   
-  PostExpectation mockTokenCall() => when(fetchSecureCacheStorage.fetchSecure(any));
+  PostExpectation mockTokenCall() => when(fetchSecureCacheStorage.fetch(any));
 
   void mockToken() {
     token = faker.guid.guid();
@@ -70,7 +70,7 @@ void main() {
 
     await sut.request(url: url, method: method, body: body);
 
-    verify(fetchSecureCacheStorage.fetchSecure('token')).called(1);
+    verify(fetchSecureCacheStorage.fetch('token')).called(1);
   
   });
 
@@ -98,7 +98,7 @@ void main() {
     final future = sut.request(url: url, method: method, body: body);
 
     expect(future, throwsA(HttpError.forbidden));
-    verify(deleteSecureCacheStorage.deleteSecure(key: 'token')).called(1);
+    verify(deleteSecureCacheStorage.delete(key: 'token')).called(1);
   
   });
 
@@ -115,10 +115,10 @@ void main() {
     mockHttpResponseError(HttpError.forbidden);
 
     final future = sut.request(url: url, method: method, body: body);
-    await untilCalled(deleteSecureCacheStorage.deleteSecure(key: 'token'));
+    await untilCalled(deleteSecureCacheStorage.delete(key: 'token'));
 
     expect(future, throwsA(HttpError.forbidden));
-    verify(deleteSecureCacheStorage.deleteSecure(key: 'token')).called(1);
+    verify(deleteSecureCacheStorage.delete(key: 'token')).called(1);
   });
 }
     
