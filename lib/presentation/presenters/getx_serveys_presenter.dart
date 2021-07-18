@@ -34,10 +34,14 @@ class GetxSurveysPresenter implements SurveysPresenter{
         date: DateFormat('dd MMM yyyy').format(survey.dateTime),
         didAnswer: survey.didAnswer
       )).toList();
-    } on DomainError {
+    } on DomainError catch(error) {
+      if (error == DomainError.accessDenied) {
+        _isSessionExpired.value = true;
+      } else {
       _surveys.subject.addError(UIError.unexpected.description);
+      }
     } finally {
-    _isLoading.value = false;
+      _isLoading.value = false;
     }
   }
 

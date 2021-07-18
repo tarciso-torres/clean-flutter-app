@@ -37,8 +37,12 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter{
         percent: '${answer.percent}%')
       ).toList()
     );
-    } on DomainError {
+    } on DomainError  catch(error) {
+      if (error == DomainError.accessDenied) {
+        _isSessionExpired.value = true;
+      } else {
       _surveyResult.subject.addError(UIError.unexpected.description);
+      }
     } finally {
       _isLoading.value = false;
     }
