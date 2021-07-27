@@ -9,14 +9,14 @@ import '../../ui/helpers/errors/errors.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
-class GetxSurveysPresenter with SessiongManager, LoadingManager implements SurveysPresenter{
+class GetxSurveysPresenter
+with SessiongManager, LoadingManager, NavigationManager
+implements SurveysPresenter{
   final LoadSurveys loadSurveys;
 
   final _surveys = Rx<List<SurveyViewModel>>();
-  final _navigateTo = RxString();
 
   Stream<List<SurveyViewModel>> get surveysStream => _surveys.stream;
-  Stream<String> get navigateToStream => _navigateTo.stream;
 
   GetxSurveysPresenter({ @required this.loadSurveys });
 
@@ -43,6 +43,6 @@ class GetxSurveysPresenter with SessiongManager, LoadingManager implements Surve
   }
 
   void goToSurveyResult(String surveyId) {
-    _navigateTo.value = '/survey_result/$surveyId';
+    navigateTo = '/survey_result/$surveyId';
   }
 }
