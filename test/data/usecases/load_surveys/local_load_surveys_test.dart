@@ -90,6 +90,16 @@ void main() {
       expect(future, throwsA(DomainError.unexpected));
     });
 
+    test('Should throw UnexpectedError if cache is incomplete', () async {
+      mockFetch([{
+        'id': faker.guid.guid(),
+      }]);
+
+      final future = sut.load();
+      
+      expect(future, throwsA(DomainError.unexpected));
+    });
+
     test('Should throw UnexpectedError if cache throws', () async {
       mockFetchError();
 
