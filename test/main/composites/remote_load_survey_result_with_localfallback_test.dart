@@ -1,5 +1,5 @@
 import 'package:ForDev/domain/entities/entities.dart';
-import 'package:ForDev/domain/helpers/domain_error.dart';
+import 'package:ForDev/domain/helpers/helpers.dart';
 import 'package:ForDev/domain/usecases/usecases.dart';
 import 'package:faker/faker.dart';
 import 'package:meta/meta.dart';
@@ -15,9 +15,17 @@ class RemoteLoadSurveyResultWithLocalFallback implements LoadSurveyResult{
   RemoteLoadSurveyResultWithLocalFallback({@required this.remote, @required this.local});
 
   Future<SurveyResultEntity> loadBySurvey({String surveyId}) async {
-    final surveyResult = await remote.loadBySurvey(surveyId: surveyId);
-    await local.save(surveyId: surveyId, surveyResult: surveyResult);
-    return surveyResult;
+    try{
+      final surveyResult = await remote.loadBySurvey(surveyId: surveyId);
+      await local.save(surveyId: surveyId, surveyResult: surveyResult);
+      return surveyResult;
+    } catch(error) {
+      if (error == DomainError.accessDenied) {
+        rethrow;
+      }
+      await local.validate(surveyId);
+      await local.loadBySurvey(surveyId: surveyId);
+    }
   }
 }
 
@@ -48,8 +56,7 @@ void main() {
     mockRemoteLoadCall().thenAnswer((_) async => surveyResult);
   } 
 
-  void mockRemoteLoadError (DomainError error) =>
-    mockRemoteLoadCall().thenThrow(error);
+  void mockRemoteLoadError(DomainError error) => mockRemoteLoadCall().thenThrow(error);
 
   setUp(() {
     surveyId = faker.guid.guid();
@@ -83,8 +90,17 @@ void main() {
   test('Should rethrow if remote LoadBySurvey throws AccesDeniedError', () async {
     mockRemoteLoadError(DomainError.accessDenied);
 
-   final future =  await sut.loadBySurvey(surveyId: surveyId);
+   final future = sut.loadBySurvey(surveyId: surveyId);
 
-    expect(future, surveyResult);
+    expect(future, throwsA(DomainError.accessDenied));
+  });
+
+  test('Should call local LoadBySurvey on remote error', () async {
+    mockRemoteLoadError(DomainError.unexpected);
+
+   await sut.loadBySurvey(surveyId: surveyId);
+
+    verify(local.validate(surveyId)).called(1);
+    verify(local.loadBySurvey(surveyId: surveyId)).called(1);
   });
 }
