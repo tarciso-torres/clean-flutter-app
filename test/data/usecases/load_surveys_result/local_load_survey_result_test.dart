@@ -206,10 +206,9 @@ void main() {
   });
 
   group('save', () {
-    CacheStorageSpy cacheStorage;
     LocalLoadSurveyResult sut;
+    CacheStorageSpy cacheStorage;
     SurveyResultEntity surveyResult;
-    String surveyId;
 
     PostExpectation mockSaveCall() => when(cacheStorage.save(key: anyNamed('key'), value: anyNamed('value')));
 
@@ -236,7 +235,6 @@ void main() {
       cacheStorage = CacheStorageSpy();
       sut = LocalLoadSurveyResult(cacheStorage: cacheStorage);
       surveyResult = mockSurveyResult();
-      surveyId = faker.guid.guid();
     });
 
     test('Should call CacheStorage with correct values', () async {
@@ -257,15 +255,15 @@ void main() {
             'percent': '60'
           }]
         };
-      await sut.save(surveyId: surveyId, surveyResult: surveyResult);
+      await sut.save(surveyResult);
       
-      verify(cacheStorage.save(key: 'survey_result/$surveyId', value: json)).called(1);
+      verify(cacheStorage.save(key: 'survey_result/${surveyResult.surveyId}', value: json)).called(1);
     });
 
     test('Should throw UnexpectedError if save throws', () async {
       mockSaveError();
 
-      final future = sut.save(surveyId: surveyId, surveyResult: surveyResult);
+      final future = sut.save(surveyResult);
       
       expect(future, throwsA(DomainError.unexpected));
     });
