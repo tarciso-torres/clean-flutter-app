@@ -1,8 +1,8 @@
-import 'package:ForDev/domain/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 
 import '../../http/http.dart';
 import '../../models/models.dart';
