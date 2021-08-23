@@ -1,4 +1,4 @@
-import 'package:ForDev/domain/usecases/load_survey_result.dart';
+import 'package:ForDev/domain/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 import '../../../domain/entities/entities.dart';
@@ -8,7 +8,7 @@ import '../../http/http.dart';
 import '../../models/models.dart';
 
 
-class RemoteSaveSurveyResult{
+class RemoteSaveSurveyResult implements SaveSurveyResult {
   final String url;
   final HttpClient httpClient;
 
@@ -16,7 +16,8 @@ class RemoteSaveSurveyResult{
   
   Future<SurveyResultEntity> save({String answer}) async {
     try {
-      await httpClient.request(url: url, method: 'put', body: {'answer': answer});
+      final json = await httpClient.request(url: url, method: 'put', body: {'answer': answer});
+      return  RemoteSurveyResultModel.fromJson(json).toEntity();
     }on HttpError catch(error) {
       throw error == HttpError.forbidden
         ? DomainError.accessDenied
