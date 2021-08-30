@@ -47,4 +47,8 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter{
       _isLoading.value = false;
     }
   }
+
+  @override
+  Future<void> save({@required String answer}) async {
+  }
 }

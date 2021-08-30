@@ -113,7 +113,7 @@ void main() {
     expect(find.text("Question"), findsNothing);
   });
 
-  testWidgets('Should call LoadSurveyResult on reload click', (WidgetTester tester) async {
+  testWidgets('Should call LoadSurveyResult on reload button click', (WidgetTester tester) async {
     await loadPage(tester);
 
     surveyResultController.addError(UIError.unexpected.description);
@@ -165,6 +165,18 @@ void main() {
     await tester.pumpAndSettle();
     expect(Get.currentRoute, '/survey_result/any_survey_id');
 
+  });
+
+  testWidgets('Should call save on list item click', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveyResultController.add(makeSurveyResult());
+    await provideMockedNetworkImages(() async{
+      await tester.pump();
+    });
+    await tester.tap(find.text('Answer 1'));
+
+    verify(presenter.save(answer: 'Answer 1')).called(1);
   });
   
 }

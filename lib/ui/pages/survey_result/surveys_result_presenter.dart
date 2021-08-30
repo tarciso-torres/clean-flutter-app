@@ -1,4 +1,6 @@
-import 'package:ForDev/ui/pages/pages.dart';
+import 'package:meta/meta.dart';
+
+import 'survey_result.dart';
 
 abstract class SurveyResultPresenter {
   Stream<bool> get isLoadingStream;
@@ -6,4 +8,5 @@ abstract class SurveyResultPresenter {
   Stream<SurveyResultViewModel> get surveyResultStream;
   
   Future<void> loadData();
+  Future<void> save({@required String answer});
 }

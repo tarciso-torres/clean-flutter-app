@@ -6,8 +6,9 @@ import './components.dart';
 class SurveyResult extends StatelessWidget {
 
   final SurveyResultViewModel viewModel;
+  final void Function({@required String answer}) onSave;
 
-  const SurveyResult(this.viewModel);
+  const SurveyResult({ @required this.viewModel, @required this.onSave });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,12 @@ class SurveyResult extends StatelessWidget {
         if(index == 0) {
           return SurveyHeader(question: viewModel.question);
         }
-        return SurveyAnswer(viewModel: viewModel.answers[index -1]);
+        return GestureDetector(
+          onTap: () => onSave(answer: viewModel.answers[index -1].answer),
+          child: SurveyAnswer(
+            viewModel: viewModel.answers[index -1]
+          )
+        );
       },
     itemCount: viewModel.answers.length + 1,);
   }
