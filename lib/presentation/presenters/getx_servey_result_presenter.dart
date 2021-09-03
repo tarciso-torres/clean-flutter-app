@@ -9,6 +9,7 @@ import '../../ui/pages/pages.dart';
 
 class GetxSurveyResultPresenter implements SurveyResultPresenter{
   final LoadSurveyResult loadSurveyResult;
+  final SaveSurveyResult saveSurveyResult;
   final String surveyId;
 
   final _isLoading = true.obs;
@@ -21,6 +22,7 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter{
 
   GetxSurveyResultPresenter({
     @required this.loadSurveyResult,
+    @required this.saveSurveyResult,
     @required this.surveyId });
 
   Future<void> loadData() async {
@@ -50,5 +52,6 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter{
 
   @override
   Future<void> save({@required String answer}) async {
+    await saveSurveyResult.save(answer: answer);
   }
 }
