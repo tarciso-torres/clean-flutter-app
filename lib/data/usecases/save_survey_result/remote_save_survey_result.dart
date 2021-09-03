@@ -15,7 +15,6 @@ class RemoteSaveSurveyResult implements SaveSurveyResult {
   RemoteSaveSurveyResult({ @required this.url, @required  this.httpClient });
   
   Future<SurveyResultEntity> save({String answer}) async {
-    print('entrou');
     try {
       final json = await httpClient.request(url: url, method: 'put', body: {'answer': answer});
       return  RemoteSurveyResultModel.fromJson(json).toEntity();

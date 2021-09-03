@@ -19,6 +19,7 @@ void main() {
   LoadSurveyResultSpy loadSurveyResult;
   SaveSurveyResultSpy saveSurveyResult;
   SurveyResultEntity surveyResult;
+  SurveyResultEntity saveResult;
   String surveyId;
   String answer;
 
@@ -49,6 +50,13 @@ void main() {
   mockLoadSurveyResultError() => mockLoadSurveyResultCall().thenThrow(DomainError.unexpected);
   mockAccessDeniedError() => mockLoadSurveyResultCall().thenThrow(DomainError.accessDenied);
 
+  PostExpectation mockSaveSurveyResultCall() => when(saveSurveyResult.save(answer: anyNamed('answer')));
+
+  void mockSaveSurveyResult(SurveyResultEntity data) {
+    saveResult = data;
+    mockSaveSurveyResultCall().thenAnswer((_) async => saveResult);
+  }
+
   setUp(() {
     surveyId = faker.guid.guid();
     answer = faker.lorem.sentence();
@@ -60,6 +68,7 @@ void main() {
       surveyId: surveyId
     );
     mockLoadSurveyResult(mockValidData());
+    mockSaveSurveyResult(mockValidData());
   });
 
   group('loadData', () {
@@ -121,5 +130,31 @@ void main() {
 
       verify(saveSurveyResult.save(answer: answer)).called(1);
     });
+    
+    test('Should emit correct events on success', () async {
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      sut.surveyResultStream.listen(expectAsync1((result) => expect(result,
+        SurveyResultViewModel(
+          surveyId: saveResult.surveyId,
+          question: saveResult.question,
+          answers: [
+            SurveyAnswerViewModel(
+              image: saveResult.answers[0].image,
+              answer: saveResult.answers[0].answer,
+              isCurrentAnswer: saveResult.answers[0].isCurrentAnswer,
+              percent: '${saveResult.answers[0].percent}%'
+            ),
+            SurveyAnswerViewModel(
+              answer: saveResult.answers[1].answer,
+              isCurrentAnswer: saveResult.answers[1].isCurrentAnswer,
+              percent: '${saveResult.answers[1].percent}%'
+            ),
+          ]
+        )
+      )));
+      await sut.save(answer: answer);
+    });
+
   });
 }
